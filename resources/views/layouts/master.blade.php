@@ -6,10 +6,12 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{csrf_token()}}">
     <!-- Main CSS-->
     <link rel="stylesheet" type="text/css" href="{{asset('css/app.css')}}">
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    @yield('css')
 </head>
 <body class="app sidebar-mini rtl">
 <!-- Navbar-->
@@ -17,11 +19,11 @@
     <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
     <!-- Navbar Right Menu-->
     <ul class="app-nav">
-        {{--<li class="app-search">--}}
-            {{--<input class="app-search__input" type="search" placeholder="Search">--}}
-            {{--<button class="app-search__button"><i class="fa fa-search"></i></button>--}}
-        {{--</li>--}}
-        <!--Notification Menu-->
+    {{--<li class="app-search">--}}
+    {{--<input class="app-search__input" type="search" placeholder="Search">--}}
+    {{--<button class="app-search__button"><i class="fa fa-search"></i></button>--}}
+    {{--</li>--}}
+    <!--Notification Menu-->
         <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Show notifications"><i class="fa fa-bell-o fa-lg"></i></a>
             <ul class="app-notification dropdown-menu dropdown-menu-right">
                 <li class="app-notification__title">You have 4 new notifications.</li>
@@ -65,8 +67,7 @@
         <!-- User Menu-->
         <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-user fa-lg small">{ {{ucfirst(Auth::user()->fname).' '.ucfirst(Auth::user()->lname) ?? ''}}}</i></a>
             <ul class="dropdown-menu settings-menu dropdown-menu-right">
-                <li><a class="dropdown-item" href="page-user.html"><i class="fa fa-cog fa-lg"></i> Settings</a></li>
-                <li><a class="dropdown-item" href="page-user.html"><i class="fa fa-user fa-lg"></i> Profile</a></li>
+                <li><a class="dropdown-item" href="{{url('user/profile')}}"><i class="fa fa-user fa-lg"></i> Profile</a></li>
                 <li><a class="dropdown-item" href="{{url('logout')}}"><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
             </ul>
         </li>
@@ -86,20 +87,28 @@
     </div>
     <ul class="app-menu">
         <li><a class="app-menu__item {{(request()->is(['dashboard','finance','user','chairman']))?'active':''}}" href="
-        @if(Auth::User()->role_id==1)
+@if(Auth::User()->role_id==1)
             {{url('/dashboard')}}
             @elseif(Auth::User()->role_id==4)
+            {{url('/finance')}}
+            @elseif(Auth::User()->role_id==5)
             {{url('/user')}}
             @elseif(Auth::User()->role_id==3)
-            {{url('/finance')}}
+            {{url('/director')}}
             @elseif(Auth::User()->role_id==2)
             {{url('/chairman')}}
-            @endif
+            @endif"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a></li>
 
-                    "><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a></li>
+        @if (Auth::User()->role_id==2)
+            <li><a class="app-menu__item {{(request()->is('chairman/claim'))?'active':''}}" href="{{url('chairman/claim')}}"><i class="app-menu__icon fa fa-list"></i><span class="app-menu__label">Dep Claims</span></a></li>
+        @elseif(Auth::User()->role_id==3)
+            <li><a class="app-menu__item {{(request()->is('director/claim'))?'active':''}}" href="{{url('director/claim')}}"><i class="app-menu__icon fa fa-list"></i><span class="app-menu__label">Claims</span></a></li>
 
-        @if (Auth::User()->role_id==3)
+        @endif
+
+        @if (Auth::User()->role_id==4)
             <li><a class="app-menu__item {{(request()->is('finance/claim'))?'active':''}}" href="{{url('finance/claim')}}"><i class="app-menu__icon fa fa-list"></i><span class="app-menu__label">Claims</span></a></li>
+            <li><a class="app-menu__item {{(request()->is('finance/voucher'))?'active':''}}" href="{{url('finance/voucher')}}"><i class="app-menu__icon fa fa-ticket"></i><span class="app-menu__label">Vouchers</span></a></li>
 
         @endif
         @if (Auth::User()->role_id==1)
@@ -112,9 +121,9 @@
             </li>
         @endif
 
-@if (Auth::user()->role_id!=3)
+        @if (Auth::user()->role_id!=4)
 
-            <li class="treeview {{(request()->is('claim/*'))?'is-expanded':''}} "><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-edit"></i><span class="app-menu__label">Claim</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+            <li class="treeview {{(request()->is('claim/*'))?'is-expanded':''}} "><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-edit"></i><span class="app-menu__label">My Claim</span><i class="treeview-indicator fa fa-angle-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a class="treeview-item {{(request()->is('claim/claim'))?'active':''}}" href="{{url('claim/claim')}}"><i class="app-menu__icon fa fa-edit"></i><span class="app-menu__label">Post Claim</span></a></li>
                     <li><a class="treeview-item {{(request()->is('claim/recent'))?'active':''}}" href="{{url('claim/recent')}}"><i class="app-menu__icon fa fa-clock-o"></i><span class="app-menu__label">Recent Claims</span></a></li>
@@ -125,27 +134,11 @@
                 </ul>
             </li>
 
-@endif
+        @endif
 
 
-        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-th-list"></i><span class="app-menu__label">Tables</span><i class="treeview-indicator fa fa-angle-right"></i></a>
-            <ul class="treeview-menu">
-                <li><a class="treeview-item" href="table-basic.html"><i class="icon fa fa-circle-o"></i> Basic Tables</a></li>
-                <li><a class="treeview-item" href="table-data-table.html"><i class="icon fa fa-circle-o"></i> Data Tables</a></li>
-            </ul>
-        </li>
-        <li class="treeview "><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-file-text"></i><span class="app-menu__label">Pages</span><i class="treeview-indicator fa fa-angle-right"></i></a>
-            <ul class="treeview-menu">
-                <li><a class="treeview-item" href="blank-page.html"><i class="icon fa fa-circle-o"></i> Blank Page</a></li>
-                <li><a class="treeview-item" href="page-login.html"><i class="icon fa fa-circle-o"></i> Login Page</a></li>
-                <li><a class="treeview-item" href="page-lockscreen.html"><i class="icon fa fa-circle-o"></i> Lockscreen Page</a></li>
-                <li><a class="treeview-item" href="page-user.html"><i class="icon fa fa-circle-o"></i> User Page</a></li>
-                <li><a class="treeview-item" href="page-invoice.html"><i class="icon fa fa-circle-o"></i> Invoice Page</a></li>
-                <li><a class="treeview-item" href="page-calendar.html"><i class="icon fa fa-circle-o"></i> Calendar Page</a></li>
-                <li><a class="treeview-item" href="page-mailbox.html"><i class="icon fa fa-circle-o"></i> Mailbox</a></li>
-                <li><a class="treeview-item" href="page-error.html"><i class="icon fa fa-circle-o"></i> Error Page</a></li>
-            </ul>
-        </li>
+
+
     </ul>
     <li><a class="app-menu__item " href="{{route('logout')}}"><i class="app-menu__icon fa fa-sign-out"></i><span class="app-menu__label">Logout</span></a></li>
 </aside>

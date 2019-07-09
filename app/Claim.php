@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Claim extends Model
 {
+
+    protected $fillable=[
+        'dep_admin','finance','director'
+    ];
+
 public function getServiceAttribute($value){
     if($value==1){
         return "Teaching";
@@ -32,9 +37,6 @@ public function getServiceAttribute($value){
         return $this->hasMany('App\Status','user_id');
     }
 
-    public function roleClaim(){
-        return  $this->hasMany('App\Claim');
-    }
     public function userclaim()
     {
         return $this->hasOne('App\User','id');

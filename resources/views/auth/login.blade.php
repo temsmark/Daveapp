@@ -30,7 +30,7 @@
       <div class="login-box">
         <form method="POST" class="login-form" action="{{ route('login') }}">
           @csrf
-          <h3 class="login-head"><img src="{{asset('images/avatar.png')}}"  height="80px" width="80px"></h3>
+          <h3 class="login-head"><img src="{{asset('images/jkuat.jpg')}}"  height="80px" width="80px"></h3>
 
           <div class="form-group">
             <label class="control-label">USERNAME</label>

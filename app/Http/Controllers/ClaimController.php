@@ -4,11 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Claim;
 use App\ClaimAmount;
+use App\Faculty;
 use App\Message;
 use App\Status;
+use App\Unit;
 use App\Upload;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 
 class ClaimController extends Controller
 {
@@ -19,7 +24,6 @@ class ClaimController extends Controller
      */
     public function index()
     {
-        return view('claim');
     }
 
     //show recent claims
@@ -48,7 +52,10 @@ class ClaimController extends Controller
      */
     public function create()
     {
-        //
+        $units=Unit::all();
+        $faculties=Faculty::all();
+        $users=User::where('role_id','=',2)->get();
+        return view('claim',compact('units','faculties','users'));
     }
 
     /**
@@ -59,7 +66,54 @@ class ClaimController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $claim=new Claim();
+        $claim->user_id=Auth::User()->id;
+        $claim->dep_admin=0;
+        $claim->director=0;
+        $claim->finance=0;
+        $claim->semester=$request['semester'];
+        $claim->year=$request['year'];
+        $claim->faculty_id =$request['faculty_id'];
+        $claim->department_admin_id=$request['department_admin_id'];
+        $claim->department_id=$request->department_admin_id;
+        $claim->service=$request['serve'];
+        $claim->bank=$request['bank'];
+        $claim->acc_no=$request['acc_no'];
+        $claim->total=$request['total'];
+        $claim->save();
+
+foreach ($request->service as $key=>$v){
+    $data=array(
+        'claim_id'=>$claim->id,
+        'unit_id'=>$request->unit[$key],
+        'service'=>$request->service[$key],
+        'marking'=>$request->marking[$key],
+        'transport'=>$request->transport[$key],
+        'created_at'=>now(),
+        'updated_at'=>now(),
+    );
+    ClaimAmount::insert($data);
+}
+        $uploads=new Upload();
+
+
+$file=$request->file('upload');
+            $name=time(). $file->getClientOriginalName();
+            $file->move('uploads',$name);
+            $uploads->user_id=Auth::User()->id;
+            $uploads->claim_id=$claim->id;
+            $uploads->upload=$name;
+            $uploads->save();
+
+
+
+
+
+        return redirect()->back();
+
+
+
+
     }
 
     /**

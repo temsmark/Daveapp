@@ -6,13 +6,12 @@ use App\Claim;
 use App\ClaimAmount;
 use App\Message;
 use App\Upload;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 
-class ChairmanController extends Controller
+class DirectorController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,24 +20,14 @@ class ChairmanController extends Controller
      */
     public function index()
     {
-        $department=Auth::User()->department_id;
-        $users=User::where('department_id','=',$department)->get();
-        $claim=Claim::where('department_id','=',$department)->get();
-        return view('chairman.chairman-dashboard',compact('claim','users'));
+        return view('director.director');
     }
-
     public  function claim()
     {
         $i=1;
         $depid=Auth::user()->department_id;
         $claims=Claim::where('department_id','=',$depid)->get();
-        return view('chairman.claims',compact('claims','i'));
-
-    }
-    public  function approve($id)
-    {
-        Claim::findOrFail($id)->update(['dep_admin'=>1]);
-        return redirect()->back();
+        return view('director.claim',compact('claims','i'));
 
     }
     public  function more($id){
@@ -48,11 +37,9 @@ class ChairmanController extends Controller
         $uploads=Upload::Where('claim_id','=',$id)->get();
         $claimAmount=ClaimAmount::Where('claim_id','=',$id)->get();
         $messages=Message::Where('claim_id','=',$id)->orderBy('created_at','DESC')->paginate(3);
-        return view('chairman.view-more',compact('uploads','claimAmount','i','messages','claims'));
+        return view('director.view-more',compact('uploads','claimAmount','i','messages','claims'));
     }
-
     /**
-     *
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -83,9 +70,15 @@ class ChairmanController extends Controller
         $message->status_id=rand(1,5);
         $message->save();
 
-        Claim::find(Input::get('claim_id'))->update(['dep_admin'=>0,'finance'=>0,'director'=>0]);
+        Claim::find(Input::get('claim_id'))->update(['finance'=>0,'director'=>0]);
 
         Session::flash('message', 'Message sent Successfully');
+        return redirect()->back();
+
+    }
+    public  function approve($id)
+    {
+        Claim::findOrFail($id)->update(['director'=>1]);
         return redirect()->back();
 
     }

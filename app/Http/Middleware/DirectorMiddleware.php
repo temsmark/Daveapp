@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class UserMiddleware
+class DirectorMiddleware
 {
     /**
      * Handle an incoming request.
@@ -15,9 +15,8 @@ class UserMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if ($request->user()->role_id==5){
-            return $next($request);
+        if ($request ->User()->role_id==3){
 
-        }
-    }
+            return $next($request);
+    }}
 }

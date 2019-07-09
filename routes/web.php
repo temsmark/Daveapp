@@ -35,24 +35,49 @@ Route::group(['middleware' => ['admin']], function () {
     Route::get('/dashboard','AdminController@index');
     Route::get('manage/users','UserController@index');
     Route::get('manage/add','UserController@create');
+    Route::post('manage/store','UserController@store');
     Route::get('manage/users/{id}', 'UserController@destroy');
 });
 //all
-Route::get('claim/claim','ClaimController@index');
+Route::get('claim/claim','ClaimController@create');
+Route::patch('user/patch/{id}','UserController@update');
+Route::get('user/profile','UserController@show');
+Route::post('claim/store','ClaimController@store');
+
 Route::get('claim/recent','ClaimController@recent');
 Route::get('claim/{id}/more/{user_id}','ClaimController@more');
+Route::get('document/pdf/{id}','DocumentController@index');
 
-
+//USER
 Route::group(['middleware' => ['user']], function () {
     Route::get('/user','UserPageController@index');
 
 });
+//FINANCE
 Route::group(['middleware' => 'finance'], function () {
 
     Route::get('/finance','FinanceController@index');
     Route::get('finance/claim','FinanceController@create');
-});
+    Route::post('finance/message','FinanceController@store');
+    Route::get('finance/more/{id}','FinanceController@more');
+    Route::get('finance/approve/{id}','FinanceController@approve');
+    Route::get('finance/voucher','FinanceController@voucher');
 
+});
+//CHAIRMAN
 Route::group(['middleware' => ['chairman']], function () {
     Route::get('chairman','ChairmanController@index');
+    Route::get('chairman/claim','ChairmanController@claim');
+    Route::post('chairman/message','ChairmanController@store');
+    Route::get('chairman/approve/{id}','ChairmanController@approve');
+    Route::get('chairman/more/{id}','ChairmanController@more');
+});
+//DIRECTOR
+Route::group(['middleware'=>['director']], function () {
+    Route::get('director','DirectorController@index');
+    Route::get('director/claim','DirectorController@claim');
+    Route::post('director/message','DirectorController@store');
+    Route::get('director/more/{id}','DirectorController@more');
+    Route::get('director/approve/{id}','DirectorController@approve');
+
 });

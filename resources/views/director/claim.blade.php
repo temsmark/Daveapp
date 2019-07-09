@@ -34,13 +34,14 @@
                                     <th>Name</th>
                                     <th>PF No</th>
                                     <th>Dep.</th>
-                                    <th>Sem/Year</th>
                                     <th>Service</th>
+                                    <th>Sem/Year</th>
                                     <th>Total</th>
                                     <th>Claimed On</th>
                                     <th>Approve</th>
                                     <th>Action</th>
                                     <th>More</th>
+                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -60,8 +61,8 @@
                                         <td> {{$claim->created_at}} <br> <b class="small">{{$claim->created_at->DiffForHumans()}}</b> </td>
                                         <td>
 
-                                            @if($claim->finance==0)
-                                                <span class="badge badge-pill badge-danger">Pending Finance Dep</span>
+                                            @if($claim->director==0)
+                                                <span class="badge badge-pill badge-danger">Pending Department Chairman</span>
 
                                             @else
                                                 <span class="badge badge-pill badge-success">Approved</span>
@@ -69,8 +70,8 @@
                                             @endif
 
                                         </td>
-                                        @if($claim->finance==0)
-                                            <td> <a class="btn btn-info"  href="{{url('finance/approve/'.$claim->id)}}">APPROVE</a></td>
+                                        @if($claim->director==0)
+                                            <td> <a class="btn btn-info"  href="{{url('director/approve/'.$claim->id)}}">APPROVE</a></td>
 
                                         @else
                                             <td>
@@ -90,7 +91,7 @@
                                                                 <div class="alert alert-info">
                                                                     Decline <strong><i>{{ucfirst($claim->userclaim['fname']). ' '.ucfirst($claim->userclaim['lname'])}}</i></strong> request by stating your reason.
                                                                 </div>
-                                                                <form action="{{action('FinanceController@store')}}"  method="post">
+                                                                <form action="{{action('DirectorController@store')}}"  method="post">
                                                                     @csrf
                                                                     <div class="form-group">
                                                                         <label for="email">Comment: </label>
@@ -112,7 +113,7 @@
 
                                         @endif
 
-                                        <td> <a class="btn btn-primary"  href="{{url('finance/more/'.$claim->id)}}">VIEW MORE</a></td>
+                                        <td> <a class="btn btn-primary"  href="{{url('director/more/'.$claim->id)}}">VIEW MORE</a></td>
                                     </tr>
 
                                 @endforeach

@@ -1,4 +1,10 @@
 @extends('layouts.master')
+@section('css')
+    {{--<link rel="stylesheet" href="{{asset('css/dropzone.min.css')}}">--}}
+    {{--<script src="{{asset('js/dropzone.min.js')}}"></script>--}}
+
+
+@stop
 @section('content')
     <main class="app-content">
         <div class="app-title">
@@ -15,83 +21,194 @@
             </ul>
         </div>
 
-        <div class="row">
-            <div class="col-md-6">
-                <div class="tile">
-                    <h3 class="tile-title">Register</h3>
-                    <hr>
-                    <div class="tile-body">
-                        <form class="form-horizontal">
-                            <div class="form-group row">
-                                <label class="control-label col-md-3">Name</label>
-                                <div class="col-md-8">
-                                    <input class="form-control" type="text" placeholder="Enter full name" value="{{ucfirst(Auth::User()->fname).' '.ucfirst(Auth::User()->lname)}}" disabled>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="control-label col-md-3">Id Number</label>
-                                <div class="col-md-8">
-                                    <input class="form-control col-md-8" type="email" placeholder="Enter email address" value="{{Auth::User()->id_no}}" disabled>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="control-label col-md-3">Pf Number</label>
-                                <div class="col-md-8">
-                                    <input class="form-control col-md-8" type="email" placeholder="Enter email address" value="{{Auth::User()->pf_no}}" disabled>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="control-label col-md-3">Department</label>
-                                <div class="col-md-8">
-                                    <textarea class="form-control" rows="4" placeholder="Enter your address"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="control-label col-md-3">Gender</label>
-                                <div class="col-md-9">
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="radio" name="gender">Male
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="radio" name="gender">Female
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="control-label col-md-3">Identity Proof</label>
-                                <div class="col-md-8">
-                                    <input class="form-control" type="file">
-                                </div>
-                            </div>
-
-
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="tile">
-                    <div class="form-group row">
-                        <label class="control-label col-md-3">Email</label>
-                        <div class="col-md-8">
-                            <input class="form-control col-md-8" type="email" placeholder="Enter email address">
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">Claim Form</h3>
+                <div class="tile-body" id="app">
+                    <form class="row" method="post" action=" {{action("ClaimController@store")}}" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group col-md-3">
+                            <label class="control-label">Name:</label>
+                            <input class="form-control" type="text" placeholder="Enter full name" value="{{ucfirst(Auth::User()->fname).' '.ucfirst(Auth::User()->lname)}}" disabled>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8 col-md-offset-3">
-                            <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Claim</button>
-                            {{--&nbsp;&nbsp;&nbsp;<a class="btn btn-secondary" href="#"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>--}}
+                        <div class="form-group col-md-3">
+                            <label class="control-label">Identification Number:</label>
+                            <input class="form-control col-md-8" type="email" placeholder="Enter email address" value="{{Auth::User()->id_no}}" disabled>
                         </div>
-                    </div>
+                        <div class="form-group col-md-3">
+                            <label class="control-label">PF Number:</label>
+                            <input class="form-control col-md-8" type="email" placeholder="Enter email address" value="{{Auth::User()->pf_no}}" disabled>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label class="control-label">Department:</label>
+                            <input class="form-control col-md-8" type="email"  value="{{Auth::User()->department['department_name']}}" disabled>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label class="control-label">Faculty:</label>
+                            <select name="faculty_id" id="">
+                            @foreach ($faculties as $faculty)
+                                <option value="{{$faculty->id}}">{{str_limit( $faculty->faculty_name,40)}}</option>
+                            @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label class="control-label">Department Chairman:</label>
+                            <select name="department_admin_id" id="">
+                                @foreach ($users as $user)
+                                    <option value="{{$user->id}}">{{ucfirst($user->fname).' '. ucfirst($user->lname)}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label class="control-label">Semester:</label>
+                            <input class="form-control col-md-8" type="number" placeholder="Semester" name="semester">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label class="control-label">Year:</label>
+                            <input class="form-control col-md-8" type="datetime-local" placeholder="Year" name="year">
+                        </div>
 
+                        <div class="form-group col-md-3">
+                            <label class="control-label">Bank:</label>
+                            <select name="bank" id="">
+                                <option value="Equity">--Equity--</option>
+                                <option value="Kcb">--Kcb--</option>
+                                <option value="Unaitas">--Unaitas--</option>
+
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label class="control-label">Account Number:</label>
+                            <input class="form-control" type="number" placeholder="Acc no" name="acc_no">
+                        </div>
+                        <div class="form-check-inline">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="serve" value="1">Teaching
+                                <input type="radio" class="form-check-input" name="serve" value="2">Technical
+                                <input type="radio" class="form-check-input" name="serve" value="3">Technical Support
+
+                            </label>
+                        </div>
+
+
+
+
+                        <div class="form-group col-md-12">
+
+                            <button type="button" class="btn btn-info button fa fa-plus">Add</button>
+                            <button type="button" class="btn btn-danger button2 float-right fa fa-minus">Remove</button>
+                        </div>
+
+
+                        <table class="table table-borderless">
+                            <thead>
+                            <tr>
+                                <th>Unit:</th>
+                                <th>Service:</th>
+                                <th>Marking:</th>
+                                <th>Transport:</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="tr">
+                                <td >
+                                    <div class="form-group">
+                                        <select name="unit[]">
+                                            @foreach ($units as $unit)
+                                                <option value="{{$unit->id}}">{{str_limit( $unit->unit_name,40)}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </td>
+                                <td >
+                                    <div class="form-group">
+                                        <input class="form-control col-md-8" type="number" id="service" name="service[]" placeholder="Service Claim"  >
+
+                                    </div>
+                                </td>
+                                <td >
+                                    <div class="form-group">
+                                        <input class="form-control col-md-8" type="number" id="marking" name="marking[]" placeholder="Marking Claim" >
+
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input class="form-control col-md-8" type="number" id="transport" name="transport[]" placeholder="Transport Claim" >
+
+                                    </div>
+                                </td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="container">
+                            <input type="number" name="total" id="sum" hidden>
+                            <h3 class="text-center total">Total</h3>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="control-label">Upload Files:</label>
+                            <input class="form-control-file col-md-12" type="file" name="upload">
+                        </div>
+
+                        <div class="form-group col-md-4 align-self-end m-3">
+                            <button class="btn btn-primary float-right" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Claim</button>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
-        </main>
+
+    </main>
 
 
+@stop
+@section('script')
+    <Script>
+        $(document).ready( function () {
+            $(".button").click(function () {
+                $(".tr:last").clone(false).appendTo("tbody:last");
+
+                var sum=0;
+                $("#service,#marking,#transport").clone(true).each(function () {
+                    sum+=+$(this).val();
+                });
+                $('.total').html("Total:"+' '+sum+" Sh/=");
+                $('#sum').val(sum);
+
+            });
+            $(".button2").click(function () {
+                $(".tr").not(".tr:first").remove(".tr:last");
+                var sum=0;
+                $("#service,#marking,#transport").clone(true).each(function () {
+                    sum-=-$(this).val();
+                });
+                $('.total').html("Total:"+' '+sum+" Sh/=");
+                $('#sum').val(sum);
+
+            });
+
+        })
+    </Script>
+    <script>
+        $(document).ready( function () {
+            $("tbody").bind('keyup change',function () {
+                var sum=0;
+                $("#service,#marking,#transport").clone(true).each(function () {
+                    sum+=+$(this).val();
+               });
+                $('.total').html("Total:"+' '+sum+" Sh/=");
+                $('#sum').val(sum);
+
+
+
+
+            });
+
+
+
+        })
+    </script>
 @stop
