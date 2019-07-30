@@ -23,15 +23,7 @@
                 <div class="tile">
                     <div class="tile-title-w-btn">
                         <h3 class="title">Units:</h3>
-                        @if(count($voucher)>0)
-                            @foreach($voucher as$id)
-                                <a href="{{url('finance/voucher/more/'.$id->claim_id)}}" class="btn btn-primary" role="button">View Voucher</a>
-                            @endforeach
-                        @else
-                            <div class="alert alert-info">
-                                No Voucher generated yet
-                            </div>
-                        @endif
+
                     </div>
                     <div class="tile-body">
 
@@ -53,10 +45,10 @@
                                 <tr>
                                     <td>{{$i++}}</td>
                                     <td>{{strtoupper(str_limit( $claim->unit['unit_name'],35,' ---'))}}</td>
-                                    <td>{{ number_format( $claim->service)}} Sh/=</td>
-                                    <td>{{ number_format($claim->marking)}} Sh/=</td>
-                                    <td>{{number_format( $claim->transport)}} Sh/=</td>
-                                    <td class="add"> <b> <u>{{ $claim->service + $claim->marking + $claim->transport}} Sh/=</u></b></td>
+                                    <td>{{$claim->service}} Sh/=</td>
+                                    <td>{{$claim->marking}} Sh/=</td>
+                                    <td>{{$claim->transport}} Sh/=</td>
+                                    <td class="add"> <b> <u>{{$claim->service + $claim->marking + $claim->transport}} Sh/=</u></b></td>
 
 
                                 </tr>
@@ -125,7 +117,7 @@
 
                                         <span class="badge badge-primary badge-pill">{{$message->created_at->DiffForHumans()}}</span>
 
-                                        <p class="ml-5 mt-2"><i>{{$message->message}}</i></p>
+                                        <p class="ml-5 mt-2"><i>{{$message->message }}</i></p>
                                     </div>
                                 </div>
 
@@ -167,7 +159,7 @@
             sum+=parseFloat($(this).text());
 
         });
-        $('.total').html("Total:"+' '+sum+" Sh/=");
+        $('.total').html("Total:"+' '+sum);
     </script>
 @stop
 @stop

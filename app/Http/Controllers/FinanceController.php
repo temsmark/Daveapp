@@ -22,7 +22,8 @@ class FinanceController extends Controller
      */
     public function index()
     {
-        return view('finance.finance-dashboard');
+//        return view('finance.finance-dashboard');
+        return redirect('finance/claim');
     }
     public  function more($id){
 
@@ -31,14 +32,36 @@ class FinanceController extends Controller
         $uploads=Upload::Where('claim_id','=',$id)->get();
         $claimAmount=ClaimAmount::Where('claim_id','=',$id)->get();
         $messages=Message::Where('claim_id','=',$id)->orderBy('created_at','DESC')->paginate(3);
-        return view('finance.view-more',compact('uploads','claimAmount','i','messages','claims'));
+        $voucher=Voucher::where('claim_id','=',$id)->get();
+        return view('finance.view-more',compact('uploads','claimAmount','i','messages','claims','voucher'));
     }
 
     public  function approve($id)
     {
         Claim::findOrFail($id)->update(['finance'=>1]);
-        return redirect()->back();
+        $claim=Claim::where('id','=',$id)->first();
+        $lastvoucher=Voucher::orderBy('created_at','DESC')->first();
+        if($lastvoucher==null){
+            $i=0;
+            $vid="JKUAT-" .$i . '-' . $id;
+        }else {
+            $vid = "JKUAT-" . $lastvoucher->id++ . '-' . $id;
+        }
+        if(Voucher::where('claim_id','=',$id)->exists()){
 
+        }else {
+            $voucher = new  Voucher();
+            $voucher->user_id = $claim->user_id;
+            $voucher->claim_id = $claim->id;
+            $voucher->voucher_id = $vid;
+            $voucher->amount = $claim->total;
+            $voucher->status = 0;
+            $voucher->alert = 1;
+            $voucher->save();
+        }
+        Session::flash('message', 'A Voucher has Been Created For the User');
+
+        return redirect()->back();
     }
 
     /**
@@ -83,6 +106,8 @@ class FinanceController extends Controller
         $message->save();
 
         Claim::find(Input::get('claim_id'))->update(['finance'=>0]);
+
+
 
         Session::flash('message', 'Message sent Successfully');
         return redirect()->back();

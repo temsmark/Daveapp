@@ -19,6 +19,7 @@ class CreateClaimsTable extends Migration
             $table->integer('director');
             $table->integer('finance');
             $table->integer('dep_admin');
+            $table->integer('dean');
             $table->integer('semester');
             $table->year('year');
             $table->integer('faculty_id');

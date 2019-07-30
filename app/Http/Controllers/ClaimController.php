@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Session;
 
 class ClaimController extends Controller
 {
@@ -70,6 +71,7 @@ class ClaimController extends Controller
         $claim->user_id=Auth::User()->id;
         $claim->dep_admin=0;
         $claim->director=0;
+        $claim->dean=0;
         $claim->finance=0;
         $claim->semester=$request['semester'];
         $claim->year=$request['year'];
@@ -108,6 +110,7 @@ $file=$request->file('upload');
 
 
 
+        Session::flash('message', "Claim Posted");
 
         return redirect()->back();
 

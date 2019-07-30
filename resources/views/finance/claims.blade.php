@@ -25,6 +25,9 @@
                     @endif
 
                     @if (count($claims)<=0)
+                            <div class="alert alert-info">
+                                <h4 class="text-center small"> <strong>Sorry!</strong> No Claims made to this department</h4>
+                            </div>
                     @else
                         <div class="table-responsive">
                             <table class="table"  id="sampleTable">
@@ -56,7 +59,7 @@
 
                                         <td>Sem {{$claim->semester}} / {{$claim->year}}</td>
                                         <td>{{$claim->service}}</td>
-                                        <td> {{$claim->total}} Sh/=</td>
+                                        <td> {{ number_format( $claim->total)}} Sh/=</td>
                                         <td> {{$claim->created_at}} <br> <b class="small">{{$claim->created_at->DiffForHumans()}}</b> </td>
                                         <td>
 
@@ -95,7 +98,7 @@
                                                                     <div class="form-group">
                                                                         <label for="email">Comment: </label>
                                                                         <input type="hidden" name="claim_id" value="{{$claim->id}}">
-                                                                        <textarea type="text"name="message" rows="10" cols="30" class="form-control"  autofocus></textarea>
+                                                                        <textarea type="text"name="message" rows="10" cols="30" class="form-control"  autofocus required></textarea>
                                                                     </div>
                                                                     <button type="submit" class="btn btn-primary">Submit</button>
                                                                 </form>

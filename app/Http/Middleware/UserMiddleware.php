@@ -15,7 +15,7 @@ class UserMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if ($request->user()->role_id==5){
+        if ($request->user()->role_id==6){
             return $next($request);
 
         }

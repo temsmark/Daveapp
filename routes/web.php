@@ -24,7 +24,7 @@ Route::get('logout',function (){
 
 Auth::routes(['register'=>false,'reset'=>false]);
 
-Route::get('/home', 'HomeController@index')->name('home');
+ Route::get('/home', 'HomeController@index')->name('home');
 
 //Route::get('/dashboard', function () {
 //    return view('admin.dashboard');
@@ -37,13 +37,16 @@ Route::group(['middleware' => ['admin']], function () {
     Route::get('manage/add','UserController@create');
     Route::post('manage/store','UserController@store');
     Route::get('manage/users/{id}', 'UserController@destroy');
+    Route::get('edit/{id}','UserController@edit');
+    Route::patch('admin/patch/{id}','UserController@adminupdate');
+
 });
 //all
 Route::get('claim/claim','ClaimController@create');
 Route::patch('user/patch/{id}','UserController@update');
 Route::get('user/profile','UserController@show');
 Route::post('claim/store','ClaimController@store');
-
+Route::get('invoice/more/{id}','InvoiceController@show');
 Route::get('claim/recent','ClaimController@recent');
 Route::get('claim/{id}/more/{user_id}','ClaimController@more');
 Route::get('document/pdf/{id}','DocumentController@index');
@@ -59,6 +62,7 @@ Route::group(['middleware' => 'finance'], function () {
     Route::get('/finance','FinanceController@index');
     Route::get('finance/claim','FinanceController@create');
     Route::post('finance/message','FinanceController@store');
+    Route::get('finance/voucher/more/{id}','InvoiceController@showmore');
     Route::get('finance/more/{id}','FinanceController@more');
     Route::get('finance/approve/{id}','FinanceController@approve');
     Route::get('finance/voucher','FinanceController@voucher');
@@ -81,3 +85,24 @@ Route::group(['middleware'=>['director']], function () {
     Route::get('director/approve/{id}','DirectorController@approve');
 
 });
+
+Route::get('dean','DeanController@index');
+
+
+//Dean
+Route::get('dean','DeanController@index');
+Route::get('dean/approve/{id}','DeanController@approve');
+Route::post('dean/message','DeanController@store');
+Route::get('dean/more/{id}','DeanController@more');
+Route::get('dean/all','DeanController@all');
+
+
+Route::get('/any', function () {
+
+    $pdf = App::make('dompdf.wrapper');
+    $pdf->loadHTML('<h1>Test</h1>');
+    return $pdf->stream();
+
+
+});
+Route::get('master','InvoiceController@master');

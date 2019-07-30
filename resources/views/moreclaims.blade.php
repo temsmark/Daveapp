@@ -23,18 +23,12 @@
                 <div class="tile">
                     <div class="tile-title-w-btn">
                         <h3 class="title">Units:</h3>
-                        <p>      @foreach($claims as $claim)
-                                @if ($claim->finance==0)
-                                    <a class="btn btn-danger icon-btn" href="#" >Pending: Finance</a>
-                                @elseif ($claim->dep_admin==0)
-                                    <a class="btn btn-danger icon-btn" href="#" >Pending: Admin Department </a>
-                                @elseif($claim->finance==1 || $claim->dep_admin==1)
-                                    <a class="btn btn-info icon-btn" href="#" >Print Voucher</a>
-
-                                @endif
-                                &nbsp;&nbsp;&nbsp;&nbsp;
-                            @endforeach
-                        </p>
+                        @foreach($claims as $claim)
+                            @if ($claim->finance==0)
+                             @else
+                                <a href="{{url('invoice/more/'.$claim->id)}}" class="btn btn-success" role="button">VIEW VOUCHER</a>
+                            @endif
+                        @endforeach
                     </div>
                     <div class="tile-body">
 
@@ -59,7 +53,7 @@
                                     <td>{{$claim->service}} Sh/=</td>
                                     <td>{{$claim->marking}} Sh/=</td>
                                     <td>{{$claim->transport}} Sh/=</td>
-                                    <td>7177717Sh/=</td>
+                                    <td class="add"> <b> <u>{{$claim->service + $claim->marking + $claim->transport}} Sh/=</u></b></td>
 
 
                                 </tr>
@@ -77,7 +71,7 @@
                 <div class="tile">
                     <div class="tile-title-w-btn">
                         <h3 class="title">Uploads</h3>
-                        <p><a class="btn btn-primary icon-btn" href="#" target="_blank"><i class="fa fa-file"></i>Docs</a></p>
+                        <p><a class="btn btn-primary icon-btn" href="#" disabled><i class="fa fa-file"></i>Docs</a></p>
                     </div>
                     <div class="tile-body">
                         @if (count($uploads)<=0)
@@ -87,7 +81,8 @@
                         @else
                             <div class="list-group">
                                 @foreach($uploads as $upload)
-                                    <a href="#" class="list-group-item list-group-item-action"><span class="fa fa-file"></span> {{$upload->upload}}</a>
+                                    <a href="{{action('DocumentController@index',['id'=>$upload->id])}}" target="_blank" class="list-group-item list-group-item-action">
+                                        <span class="fa fa-file-pdf-o"></span> &nbsp;{{$upload->upload}} <span class="float-right badge badge-primary">{{$upload->created_at->DiffForHumans()}}</span></a>
                                 @endforeach
                             </div>
                         @endif
@@ -105,7 +100,7 @@
         <div class="row">
             <div class="col-md-6">
                 @if (count($messages)<=0)
-                    @else
+                @else
 
                     <div class="tile">
                         <div class="tile-title-w-btn">
@@ -122,18 +117,21 @@
                                     </div>
                                     <div class="media-body">
                                         <h5 class="media-heading">
-                                            {{$message->roleClaim}}
-
+                                            &nbsp;{{$message->role['role_name']}}
                                         </h5>
 
                                         <span class="badge badge-primary badge-pill">{{$message->created_at->DiffForHumans()}}</span>
 
-                                        <p>{{str_limit($message->message ,150,' ...more')}}</p>
+                                        <p class="ml-5 mt-2"><i>{{$message->message}}</i></p>
                                     </div>
                                 </div>
 
+
+
                                 <hr class="mt-4">
                             @endforeach
+                            <h6>{{$messages->render()}}</h6>
+
                         </div>
                     </div>
 
@@ -143,17 +141,30 @@
 
             </div>
             <div class="col-md-6">
-                <div class="tile">
+                <div class="tile ">
                     <div class="tile-title-w-btn">
                         <h3 class="title">Total Claim</h3>
                     </div>
                     <div class="tile-body">
 
+                        <ul class="list-group">
+
+                            <li class="list-group-item list-group-item-info"> <h1 class="total text-center font-weight-bold"></h1></li>
+                        </ul>
                     </div>
                 </div>
             </div>
-            </div>
+        </div>
     </main>
 
+@section('script')
+    <script>
+        var sum =0;
+        $('.add').each(function () {
+            sum+=parseFloat($(this).text());
 
+        });
+        $('.total').html("Total:"+' '+sum);
+    </script>
+@stop
 @stop

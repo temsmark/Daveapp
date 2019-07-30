@@ -7,6 +7,7 @@ use App\ClaimAmount;
 use App\Message;
 use App\Upload;
 use App\User;
+use App\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
@@ -83,7 +84,8 @@ class ChairmanController extends Controller
         $message->status_id=rand(1,5);
         $message->save();
 
-        Claim::find(Input::get('claim_id'))->update(['dep_admin'=>0,'finance'=>0,'director'=>0]);
+        Claim::find(Input::get('claim_id'))->update(['dep_admin'=>2,]);
+
 
         Session::flash('message', 'Message sent Successfully');
         return redirect()->back();
@@ -107,31 +109,5 @@ class ChairmanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

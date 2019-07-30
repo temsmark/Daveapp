@@ -11,6 +11,10 @@ class Voucher extends Model
         return $this->belongsTo('App\User');
     }
     public function fromy(){
-        return $this->belongsTo('App\User','id');
+        return $this->belongsTo('App\User','user_id');
     }
+
+
+
+
 }

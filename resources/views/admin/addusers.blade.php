@@ -19,7 +19,7 @@
                     <div class="tile-body">
                         @if (Session::has('message'))
                             <div id="alert-out" class="alert alert-info">
-                          <span class="text-center"> {{ old('fname').' '.old('lname')}}{{ Session::get('message')}}</span>
+                          <span class="text-center"> {{ old('fname').' '.old('lname')}}&nbsp;{{ Session::get('message')}}</span>
                             </div>
                         @endif
                         <form class="form-horizontal" method="post" action="{{action('UserController@store')}}">

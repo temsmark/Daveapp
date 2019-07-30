@@ -92,6 +92,7 @@ class UserController extends Controller
         $id=Auth::user()->id;
         $data=User::where('id','=',$id)->get();
 
+
         return view('profile',compact('data'));
     }
 
@@ -103,7 +104,12 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data=User::where('id','=',$id)->get();
+        $roles=Role::all();
+        $faculties=Faculty::all();
+        $departments=Department::all();
+
+        return view('admin.edit', compact('data','roles','departments','faculties'));
     }
 
     /**
@@ -157,5 +163,28 @@ class UserController extends Controller
         User::whereId($id)->delete();
         Session::flash('message', "User deleted successfully");
         return redirect('manage/users');
+    }
+
+    public function adminupdate(Request $request, $id)
+    {
+
+
+        $input=$request->all();
+        $user=User::findOrFail($id);
+        $user->fname=$input['fname'];
+        $user->lname=$input['lname'];
+        $user->department_id=$request->department_id;
+        $user->faculty_id=$request->faculty_id;
+        $user->role_id=$request->role_id;
+        $user->pf_no=$input['pf_no'];
+        $user->id_no=$input['id_no'];
+        if ($input['password']==null){
+        }else{
+            $user->password=bcrypt($input['password']);
+        }
+
+        $user->save();
+        Session::flash('message', "User details updated");
+        return redirect()->back();
     }
 }

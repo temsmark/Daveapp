@@ -23,6 +23,12 @@
 
         <div class="col-md-12">
             <div class="tile">
+                @if (Session::has('message'))
+                    <div id="alert-out" class="alert alert-success">
+
+                        <h3 class="text-center"><i>{{Session::get('message')}}</i></h3>
+                    </div>
+                @endif
                 <h3 class="tile-title">Claim Form</h3>
                 <div class="tile-body" id="app">
                     <form class="row" method="post" action=" {{action("ClaimController@store")}}" enctype="multipart/form-data">
@@ -47,7 +53,7 @@
                             <label class="control-label">Faculty:</label>
                             <select name="faculty_id" id="">
                             @foreach ($faculties as $faculty)
-                                <option value="{{$faculty->id}}">{{str_limit( $faculty->faculty_name,40)}}</option>
+                                <option value="{{$faculty->id}}">{{str_limit( $faculty->faculty_name,30)}}</option>
                             @endforeach
                             </select>
                         </div>
@@ -61,11 +67,11 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label class="control-label">Semester:</label>
-                            <input class="form-control col-md-8" type="number" placeholder="Semester" name="semester">
+                            <input class="form-control col-md-8" type="number" placeholder="Semester" name="semester" required>
                         </div>
                         <div class="form-group col-md-3">
                             <label class="control-label">Year:</label>
-                            <input class="form-control col-md-8" type="datetime-local" placeholder="Year" name="year">
+                            <input class="form-control col-md-8" type="datetime-local" placeholder="{{date('Y')}}" name="year" required>
                         </div>
 
                         <div class="form-group col-md-3">
@@ -74,6 +80,8 @@
                                 <option value="Equity">--Equity--</option>
                                 <option value="Kcb">--Kcb--</option>
                                 <option value="Unaitas">--Unaitas--</option>
+                                <option value="NationalBank">--National Bank--</option>
+                                <option value="StandardChartered">--Standard Chartard--</option>
 
                             </select>
                         </div>
@@ -150,7 +158,7 @@
                         </div>
                         <div class="form-group col-md-12">
                             <label class="control-label">Upload Files:</label>
-                            <input class="form-control-file col-md-12" type="file" name="upload">
+                            <input class="form-control-file col-md-12" type="file" name="upload" required>
                         </div>
 
                         <div class="form-group col-md-4 align-self-end m-3">
@@ -210,5 +218,9 @@
 
 
         })
+    </script>
+    <script>  setTimeout(function () {
+            $('#alert-out').hide();
+        },3000);
     </script>
 @stop

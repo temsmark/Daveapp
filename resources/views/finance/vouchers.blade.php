@@ -48,11 +48,11 @@
                                         <td>{{$voucher->user['fname'].' '.$voucher->user['lname']}}</td>
                                         <td><b>{{$voucher->voucher_id}}</b></td>
                                         <td><b>{{$voucher->user['pf_no']}}</b></td>
-                                        <td><b>{{$voucher->amount}} /=</b></td>
+                                        <td><b>{{number_format($voucher->amount)}} /=</b></td>
                                         <td>{{$voucher->created_at}}
                                             <br>
                                             <span class="small font-italic">{{$voucher->created_at->DiffForHumans()}}</span></td>
-                                        <td> <a href="#" class="btn btn-success btn-sm" role="button">Preview</a></td>
+                                        <td> <a href="{{url('finance/voucher/more/'.$voucher->id)}}" class="btn btn-success btn-sm" role="button">Preview</a></td>
 
                                 @endforeach
                                 </tbody>

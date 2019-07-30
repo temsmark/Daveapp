@@ -3,7 +3,7 @@
     <main class="app-content">
         <div class="app-title">
             <div>
-                <h1><i class="fa fa-list"></i> Department Claim</h1>
+                <h1><i class="fa fa-list"></i> Claims Posted To The Dean</h1>
                 <p>" {{str_limit(Illuminate\Foundation\Inspiring::quote(),60,'... -- more--')}} "</p>
             </div>
             <ul class="app-breadcrumb breadcrumb">
@@ -12,6 +12,35 @@
 
             </ul>
         </div>
+
+
+        <div class="row">
+            <div class="col-md-6 col-lg-3">
+                <div class="widget-small primary coloured-icon"><i class="icon fa fa-list fa-3x"></i>
+                    <div class="info">
+                        <h4>Pending Claims</h4>
+                        <p><b>{{count($pending)}}</b></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="widget-small info coloured-icon"><i class="icon fa fa-thumbs-o-up fa-3x"></i>
+                    <div class="info">
+                        <h4>Approved</h4>
+                        <p><b>{{count($all)}}</b></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+
+            </div>
+            <div class="col-md-6 col-lg-3">
+
+            </div>
+        </div>
+
+
+
 
         <div class="row">
             <div class="container-fluid">
@@ -25,7 +54,7 @@
 
                     @if (count($claims)<=0)
                         <div class="alert alert-info">
-                            <h4 class="text-center small"> <strong>Sorry!</strong> No Claims made to this department</h4>
+                            <h4 class="text-center small"> <strong>Sorry!</strong> No Claims made yet</h4>
                         </div>
                     @else
                         <div class="table-responsive">
@@ -68,10 +97,10 @@
                                         <td> {{$claim->created_at}} <br> <b class="small">{{$claim->created_at->DiffForHumans()}}</b> </td>
                                         <td>
 
-                                            @if($claim->dep_admin==0)
+                                            @if($claim->dean==0)
                                                 <span class="badge badge-pill badge-info">Pending Department Chairman</span>
 
-                                            @elseif($claim->dep_admin==1)
+                                            @elseif($claim->dean==1)
                                                 <span class="badge badge-pill badge-success">Approved</span>
                                             @else
                                                 <span class="badge badge-pill badge-danger"> Declined By Chairman</span>
@@ -79,7 +108,7 @@
                                             @endif
 
                                         </td>
-                                        <td> <a class="btn btn-info"  href="{{url('chairman/approve/'.$claim->id)}}">APPROVE</a></td>
+                                        <td> <a class="btn btn-info"  href="{{url('dean/approve/'.$claim->id)}}">APPROVE</a></td>
 
 
 
@@ -100,7 +129,7 @@
                                                             <div class="alert alert-info">
                                                                 Decline <strong><i>{{ucfirst($claim->userclaim['fname']). ' '.ucfirst($claim->userclaim['lname'])}}</i></strong> request by stating your reason.
                                                             </div>
-                                                            <form action="{{action('ChairmanController@store')}}"  method="post">
+                                                            <form action="{{action('DeanController@store')}}"  method="post">
                                                                 @csrf
                                                                 <div class="form-group">
                                                                     <label for="email">Comment: </label>
@@ -121,7 +150,7 @@
                                         </td>
 
 
-                                        <td> <a class="btn btn-primary"  href="{{url('chairman/more/'.$claim->id)}}">VIEW MORE</a></td>
+                                        <td> <a class="btn btn-primary"  href="{{url('dean/more/'.$claim->id)}}">VIEW MORE</a></td>
                                     </tr>
 
                                 @endforeach

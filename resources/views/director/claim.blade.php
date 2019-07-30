@@ -25,6 +25,10 @@
                     @endif
 
                     @if (count($claims)<=0)
+
+                        <div class="alert alert-info">
+                            <h4 class="text-center small"> <strong>Sorry!</strong> No Claims made to this department</h4>
+                        </div>
                     @else
                         <div class="table-responsive">
                             <table class="table"  id="sampleTable">
@@ -38,8 +42,9 @@
                                     <th>Sem/Year</th>
                                     <th>Total</th>
                                     <th>Claimed On</th>
+                                    <th>Status</th>
                                     <th>Approve</th>
-                                    <th>Action</th>
+                                    <th>Decline</th>
                                     <th>More</th>
                                     <th></th>
                                 </tr>
@@ -62,18 +67,18 @@
                                         <td>
 
                                             @if($claim->director==0)
-                                                <span class="badge badge-pill badge-danger">Pending Department Chairman</span>
+                                                <span class="badge badge-pill badge-info">Pending Director Department</span>
 
-                                            @else
+                                            @elseif($claim->director==1)
                                                 <span class="badge badge-pill badge-success">Approved</span>
+                                            @elseif($claim->director==2)
+                                                <span class="badge badge-pill badge-danger">Declined</span>
 
                                             @endif
 
                                         </td>
-                                        @if($claim->director==0)
                                             <td> <a class="btn btn-info"  href="{{url('director/approve/'.$claim->id)}}">APPROVE</a></td>
 
-                                        @else
                                             <td>
 
                                                 <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal{{$i}}">DECLINE</button>
@@ -96,7 +101,7 @@
                                                                     <div class="form-group">
                                                                         <label for="email">Comment: </label>
                                                                         <input type="hidden" name="claim_id" value="{{$claim->id}}">
-                                                                        <textarea type="text"name="message" rows="10" cols="30" class="form-control"  autofocus></textarea>
+                                                                        <textarea type="text"name="message" rows="10" cols="30" class="form-control"  autofocus required></textarea>
                                                                     </div>
                                                                     <button type="submit" class="btn btn-primary">Submit</button>
                                                                 </form>
@@ -111,7 +116,6 @@
 
                                             </td>
 
-                                        @endif
 
                                         <td> <a class="btn btn-primary"  href="{{url('director/more/'.$claim->id)}}">VIEW MORE</a></td>
                                     </tr>

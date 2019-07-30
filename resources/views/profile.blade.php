@@ -63,7 +63,7 @@
                     <div class="form-group row">
                         <label class="control-label col-md-3">Department</label>
                         <div class="col-md-8">
-                            <input class="form-control" type="text"  name="department" value="{{$profile->department['department_name']}}">
+                            <input class="form-control" type="text"  name="department" value="{{$profile->department['department_name']}}" disabled>
                         </div>
                     </div>
                     <div class="form-group row">

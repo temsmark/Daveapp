@@ -10,7 +10,7 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    public $link="/images/";
+    public $link = "/images/";
     /**
      * The attributes that are mass assignable.
      *
@@ -38,15 +38,24 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function getPathAttribute($value){
-        return $this->link.$value;
+    public function getPathAttribute($value)
+    {
+        return $this->link . $value;
     }
-    public function role(){
-        return   $this->belongsTo('App\Role');
+
+    public function role()
+    {
+        return $this->belongsTo('App\Role');
     }
-    public function department(){
+
+    public function department()
+    {
         return $this->belongsTo('App\Department');
     }
+
+    public function faculty()
+    {
+        return $this->belongsTo('App\Faculty');}
 
 
 }

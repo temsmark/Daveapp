@@ -42,13 +42,13 @@
                                 {{ ucfirst($user->fname). ' '. ucfirst($user->lname)}}</td>
                                 <td><span class="font-weight-bold">{{$user->role->role_name}}</span>
                                     <br>
-                                  <i class="small"> {{strtoupper(($user->department_id==null)?'Part Timer' :$user->department['department_name'])}} </i></td>
+                                  <i class="small"> {{strtoupper(($user->department_id==null)?'Management' :$user->department['department_name'])}} </i></td>
 
                             <td>{{$user->email}}</td>
                             <td>PF_{{$user->pf_no}}</td>
                             <td>{{$user->id_no}}</td>
                             <td>{{$user->created_at->DiffForHumans()}}</td>
-                            <td> <a href="#" class="btn btn-info" role="button">EDIT</a></td>
+                            <td> <a href="{{url('edit/'.$user->id)}}" class="btn btn-info" role="button">EDIT</a></td>
                             <td> <a class="btn btn-danger" id="demoNotify" href="{{url('manage/users/'.$user->id)}}">DELETE</a></td>
 
                         </tr>
