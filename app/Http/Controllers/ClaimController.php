@@ -77,7 +77,7 @@ class ClaimController extends Controller
         $claim->year=$request['year'];
         $claim->faculty_id =$request['faculty_id'];
         $claim->department_admin_id=$request['department_admin_id'];
-        $claim->department_id=$request->department_admin_id;
+        $claim->department_id=Auth::User()->department_id;
         $claim->service=$request['serve'];
         $claim->bank=$request['bank'];
         $claim->acc_no=$request['acc_no'];

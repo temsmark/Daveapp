@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 30, 2019 at 10:16 PM
+-- Generation Time: Aug 01, 2019 at 03:46 PM
 -- Server version: 5.7.25-0ubuntu0.18.04.2
 -- PHP Version: 7.2.15-0ubuntu0.18.04.2
 
@@ -51,7 +51,9 @@ CREATE TABLE `claims` (
 --
 
 INSERT INTO `claims` (`id`, `user_id`, `director`, `finance`, `dep_admin`, `dean`, `semester`, `year`, `faculty_id`, `department_id`, `department_admin_id`, `service`, `bank`, `acc_no`, `total`, `created_at`, `updated_at`) VALUES
-(1, 3, 1, 1, 1, 1, 1, 2019, 1, 1, 2, 1, 'NationalBank', 1222222223, 1476, '2019-07-28 06:51:14', '2019-07-28 13:34:29');
+(1, 3, 1, 1, 1, 1, 1, 2019, 1, 1, 2, 1, 'NationalBank', 1222222223, 1476, '2019-07-28 06:51:14', '2019-07-28 13:34:29'),
+(2, 3, 0, 0, 0, 0, 1, 2019, 2, 1, 2, 1, 'NationalBank', 929299928, 56356, '2019-08-01 09:52:24', '2019-08-01 09:52:24'),
+(4, 7, 1, 1, 1, 1, 1, 2018, 1, 1, 2, 1, 'Equity', 12345, 26790, '2019-08-01 10:15:41', '2019-08-01 10:19:49');
 
 -- --------------------------------------------------------
 
@@ -75,7 +77,11 @@ CREATE TABLE `claim_amounts` (
 --
 
 INSERT INTO `claim_amounts` (`id`, `unit_id`, `claim_id`, `service`, `marking`, `transport`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 1234, 121, 121, '2019-07-28 06:51:14', '2019-07-28 06:51:14');
+(1, 1, 1, 1234, 121, 121, '2019-07-28 06:51:14', '2019-07-28 06:51:14'),
+(2, 1, 2, 1000, 5000, 123, '2019-08-01 09:52:24', '2019-08-01 09:52:24'),
+(3, 2, 2, 100, 50010, 123, '2019-08-01 09:52:24', '2019-08-01 09:52:24'),
+(4, 1, 3, 10000, 2344, 21321, '2019-08-01 10:08:54', '2019-08-01 10:08:54'),
+(5, 1, 4, 2435, 12232, 12123, '2019-08-01 10:15:41', '2019-08-01 10:15:41');
 
 -- --------------------------------------------------------
 
@@ -288,7 +294,10 @@ CREATE TABLE `uploads` (
 --
 
 INSERT INTO `uploads` (`id`, `user_id`, `claim_id`, `upload`, `created_at`, `updated_at`) VALUES
-(1, 3, 1, '156430747411_chapter 2.pdf', '2019-07-28 06:51:14', '2019-07-28 06:51:14');
+(1, 3, 1, '156430747411_chapter 2.pdf', '2019-07-28 06:51:14', '2019-07-28 06:51:14'),
+(2, 3, 2, '1564663944bowlschatappusermanual.pdf', '2019-08-01 09:52:25', '2019-08-01 09:52:25'),
+(3, 7, 3, '1564664934dan documentation_1.docx', '2019-08-01 10:08:54', '2019-08-01 10:08:54'),
+(4, 7, 4, '1564665341dan documentation_1.docx', '2019-08-01 10:15:41', '2019-08-01 10:15:41');
 
 -- --------------------------------------------------------
 
@@ -320,11 +329,12 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `role_id`, `fname`, `lname`, `department_id`, `faculty_id`, `pf_no`, `id_no`, `path`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 1, 'Mark', 'Mathenge', 1, 1, 12345, 29182785, 'avatar.png', 'mark@gmail.com', NULL, '$2y$10$X/5ZN8sHKNwmrcc3DMu2HO99tD0n4/8dLsRuaWXglMue7Z0CNZwk6', NULL, '2019-07-28 06:42:00', '2019-07-28 06:42:00'),
-(2, 2, 'David', 'Njuguna', 1, 1, 1234, 1234, 'avatar.png', 'david@gmail.com', NULL, '$2y$10$WsRQz/WJIxt35fetu.pMoOCmf7SKPIcvnfdQQd1RVDKg23K57Qcj2', NULL, '2019-07-28 06:42:00', '2019-07-28 06:42:00'),
+(2, 2, 'David', 'Njuguna', 1, 1, 1234, 1234, 'avatar.png', 'chairman@gmail.com', NULL, '$2y$10$WsRQz/WJIxt35fetu.pMoOCmf7SKPIcvnfdQQd1RVDKg23K57Qcj2', NULL, '2019-07-28 06:42:00', '2019-07-28 06:42:00'),
 (3, 6, 'Kelly', 'Koome', 1, 1, 12345, 12345, 'avatar.png', 'kelly@gmail.com', NULL, '$2y$10$QJM3NwA.mNJXAg1VIH5xNuQvyldwrvYM.P2eTNMfDed73BynOlzdm', NULL, '2019-07-28 06:43:23', '2019-07-28 06:43:23'),
 (4, 5, 'Finance', 'Mathenge', 0, 0, 12345, 29182785, 'avatar.png', 'finance@gmail.com', NULL, '$2y$10$X/5ZN8sHKNwmrcc3DMu2HO99tD0n4/8dLsRuaWXglMue7Z0CNZwk6', NULL, '2019-07-28 06:42:00', '2019-07-28 06:42:00'),
 (5, 3, 'Director', 'David', 1, 1, 23456, 235667, 'avatar.png', 'director@gmail.com', NULL, '$2y$10$QAdY.jvh4vf.AApRGrRmD.xOcuEkPDKD9uPMrcas4eXrA8R8Tcajy', NULL, '2019-07-28 07:24:14', '2019-07-28 07:24:14'),
-(6, 4, 'Dean', 'Mathenge', 0, 0, 12345, 29182785, 'avatar.png', 'dean@gmail.com', NULL, '$2y$10$X/5ZN8sHKNwmrcc3DMu2HO99tD0n4/8dLsRuaWXglMue7Z0CNZwk6', NULL, '2019-07-28 06:42:00', '2019-07-28 06:42:00');
+(6, 4, 'Dean', 'Mathenge', 0, 0, 12345, 29182785, 'avatar.png', 'dean@gmail.com', NULL, '$2y$10$X/5ZN8sHKNwmrcc3DMu2HO99tD0n4/8dLsRuaWXglMue7Z0CNZwk6', NULL, '2019-07-28 06:42:00', '2019-07-28 06:42:00'),
+(7, 6, 'Moses', 'Njoroge', 1, 1, 129920, 124455, 'avatar.png', 'moses@gmail.com', NULL, '$2y$10$REJN3izaU8Fd.ICgymfL9O6MqBH241zTo.MfL.EmURJT1m1g6uGe2', NULL, '2019-08-01 10:06:44', '2019-08-01 10:06:44');
 
 -- --------------------------------------------------------
 
@@ -349,7 +359,8 @@ CREATE TABLE `vouchers` (
 --
 
 INSERT INTO `vouchers` (`id`, `user_id`, `claim_id`, `voucher_id`, `amount`, `status`, `alert`, `created_at`, `updated_at`) VALUES
-(1, 3, 1, 'JKUAT-0-1', 1476, 0, 1, '2019-07-28 13:27:55', '2019-07-28 13:27:55');
+(1, 3, 1, 'JKUAT-0-1', 1476, 0, 1, '2019-07-28 13:27:55', '2019-07-28 13:27:55'),
+(2, 7, 4, 'JKUAT-1-4', 26790, 0, 1, '2019-08-01 10:19:49', '2019-08-01 10:19:49');
 
 --
 -- Indexes for dumped tables
@@ -443,12 +454,12 @@ ALTER TABLE `vouchers`
 -- AUTO_INCREMENT for table `claims`
 --
 ALTER TABLE `claims`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `claim_amounts`
 --
 ALTER TABLE `claim_amounts`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `departments`
 --
@@ -488,17 +499,17 @@ ALTER TABLE `units`
 -- AUTO_INCREMENT for table `uploads`
 --
 ALTER TABLE `uploads`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `vouchers`
 --
 ALTER TABLE `vouchers`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

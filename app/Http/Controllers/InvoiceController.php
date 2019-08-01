@@ -57,7 +57,7 @@ class InvoiceController extends Controller
     public function showmore($id)
     {
 
-            $invoices=Voucher::where('id','=',$id)->get();
+            $invoices=Voucher::where('claim_id','=',$id)->get();
 
 
         return view('invoice', compact('invoices'));

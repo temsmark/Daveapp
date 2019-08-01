@@ -67,11 +67,16 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label class="control-label">Semester:</label>
-                            <input class="form-control col-md-8" type="number" placeholder="Semester" name="semester" required>
+                            <select name="semester" id="">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+
+                            </select>
                         </div>
                         <div class="form-group col-md-3">
                             <label class="control-label">Year:</label>
-                            <input class="form-control col-md-8" type="datetime-local" placeholder="{{date('Y')}}" name="year" required>
+                            <input class="form-control col-md-8" placeholder="{{date('Y')}}" name="year" required>
                         </div>
 
                         <div class="form-group col-md-3">
@@ -91,7 +96,7 @@
                         </div>
                         <div class="form-check-inline">
                             <label class="form-check-label">
-                                <input type="radio" class="form-check-input" name="serve" value="1">Teaching
+                                <input type="radio" class="form-check-input" name="serve" value="1" checked>Teaching
                                 <input type="radio" class="form-check-input" name="serve" value="2">Technical
                                 <input type="radio" class="form-check-input" name="serve" value="3">Technical Support
 
